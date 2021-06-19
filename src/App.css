@@ -14,6 +14,7 @@
 }
 
 .App-header {
+  padding: 10%;
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -32,9 +33,8 @@
   background-color: #61dafb;
 }
 
-.active{
+.active-color{
   font-weight: bold;
-  background-color:#FFFF00;
 }
 
 @keyframes App-logo-spin {
