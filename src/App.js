@@ -1,40 +1,44 @@
-import logo from './logo.svg';
 import './App.css';
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
 
 
-
-
-
 const App = () => {
 
-  const [colorList, setColorList] = useState([
-    "66504c",
-    "dcd8d7",
-    "008000"
-  ]);
+  const [colorList, setColorList] = useState([]);
 
   const [activeColor, setActiveColor] = useState(0);
-
+  const randomColorURL = `https://www.colr.org/json/color/random`;
 
   const onGetRandomColorHandler = () => {
 
-    setColorList([...colorList, "800000"])
-    setActiveColor(activeColor + 1);
+    fetch(randomColorURL, {
+      cache: "no-store"
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data.new_color)
+        setColorList([...colorList, data.new_color])
+        setActiveColor(activeColor + 1);
+      });
   }
+
+
 
   return (
     <div className="App">
       <header className="App-header">
         <List>
-          {colorList.map((color, index) => <ListItem key={index} color={color} active />)}
+          {colorList.map((color, index) => <ListItem class="active" key={index} color={color} />)}
 
         </List>
-        <Button onClick={onGetRandomColorHandler} variant="primary" >Click to change color</Button>{' '}
+        <Button onClick={onGetRandomColorHandler} variant="primary" size="lg"> Click</Button>{' '}
+        <Button variant="secondary" size="sm">Up</Button>{' '}
+        <Button variant="secondary" size="sm">Down</Button>{' '}
+
       </header>
-    </div>
+    </div >
   );
 }
 
