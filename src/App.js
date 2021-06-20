@@ -16,8 +16,7 @@ const FetchBtn = styled.button`
 const App = () => {
 
   const [colorList, setColorList] = useState([]);
-
-  const [activeColor, setActiveColor] = useState(0);
+  const [activeColor, setActiveColor] = useState(-1);
   const randomColorURL = `https://www.colr.org/json/color/random`;
 
   const onGetRandomColorHandler = () => {
@@ -27,7 +26,7 @@ const App = () => {
     })
       .then(res => res.json())
       .then(data => {
-        if (!colorList.includes(data.new_color)) {
+        if (!colorList.includes(data.new_color) && data.new_color !== "") {
           setColorList([...colorList, data.new_color])
           setActiveColor(activeColor && activeColor !== colorList.length - 1 ? colorList.length : activeColor + 1)
         };
@@ -58,7 +57,7 @@ const App = () => {
         <Button onClick={upBtn} variant="secondary" size="sm">Up</Button>
         <Button onClick={downBtn} variant="secondary" size="sm">Down</Button>
         <List>
-          {colorList.filter(String).map((color, index) =>
+          {colorList.map((color, index) =>
             <ListItem
               key={index}
               color={color}
@@ -73,31 +72,37 @@ const App = () => {
   );
 }
 
+const ListColors = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 const List = ({ children }) => {
-
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>{children}</div>
+    <ListColors >{children}</ListColors>
   )
 };
 
+const ColorBlock = styled.div`
+  color: black;
+  background-color: ${({color})=> `#${color}`};
+  display: block;
+  width: auto;
+  height: auto;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 1rem;
+`;
+
 const ListItem = ({ color, className, setActiveColor }) => {
+
   return (
-    <div
-      style={{
-        color: "black",
-        backgroundColor: "#" + color,
-        display: "block",
-        width: "auto",
-        height: "auto",
-        padding: "5px",
-        borderRadius: "5px",
-        marginTop: "1rem"
-      }}
+    <ColorBlock
+      color={color}
       className={className}
       onClick={setActiveColor}
     >
       {color}
-    </div>
+    </ColorBlock>
   )
 };
 
